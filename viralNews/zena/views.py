@@ -3,6 +3,7 @@ from django.template import loader
 from django.http import HttpResponse
 from django.utils.text import slugify
 from .models import New
+from .forms import ContactForm
 
 # Create your views here.
 
@@ -21,3 +22,15 @@ def newDetail(request,title):
 
     except New.DoesNotExist:
         raise Http404("New does not exist")
+    
+def contact_us(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            # Handle form submission (e.g., send an email or save to database)
+            return render(request, 'success.html')
+    else:
+        form = ContactForm()
+    return render(request, 'contact_us.html', {'form': form})
+
+# def contact template caller
